@@ -16,9 +16,9 @@ const LudoUI = (() => {
         document.querySelectorAll('.screen').forEach(el => {
             el.classList.toggle('active', el.id === id);
         });
-        const quitBtn = document.getElementById('quit-btn');
-        if (quitBtn) {
-            quitBtn.style.display = (id === 'play-screen') ? 'flex' : 'none';
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        if (fullscreenBtn) {
+            fullscreenBtn.style.display = (id === 'play-screen') ? 'flex' : 'none';
         }
     }
 
@@ -149,6 +149,17 @@ const LudoUI = (() => {
                 if (confirm("Are you sure you want to quit the current match? Your progress will be lost.")) {
                     if (window.LudoSounds) LudoSounds.playClick();
                     if (window.LudoGame) window.LudoGame.stop();
+                    
+                    // Exit fullscreen if active
+                    if (document.body.classList.contains('theater-mode')) {
+                        if (document.exitFullscreen) {
+                            document.exitFullscreen().catch(() => {});
+                        } else if (document.webkitExitFullscreen) {
+                            document.webkitExitFullscreen();
+                        }
+                        document.body.classList.remove('theater-mode');
+                    }
+                    
                     showScreen('lobby-screen');
                 }
             });
@@ -160,6 +171,17 @@ const LudoUI = (() => {
             playAgainBtn.addEventListener('click', () => {
                 if (window.LudoSounds) LudoSounds.playClick();
                 if (window.LudoGame) window.LudoGame.stop();
+                
+                // Exit fullscreen if active
+                if (document.body.classList.contains('theater-mode')) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen().catch(() => {});
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    }
+                    document.body.classList.remove('theater-mode');
+                }
+                
                 showScreen('lobby-screen');
             });
         }

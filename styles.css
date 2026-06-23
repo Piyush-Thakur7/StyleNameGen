@@ -1038,3 +1038,38 @@ body.theater-mode .game-view-container {
 body.theater-mode .board-wrapper {
     max-width: min(95vw, 95vh, 600px);
 }
+
+/* Bottom Right Controls overlay during match */
+.bottom-right-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 12px;
+    z-index: 120;
+}
+
+.hud-icon-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid var(--neutral-dark);
+    background: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 0px var(--neutral-dark);
+    transition: all 0.1s ease;
+}
+
+.hud-icon-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0px var(--neutral-dark);
+}
+
+.hud-icon-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0px 0px var(--neutral-dark);
+}

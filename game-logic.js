@@ -315,10 +315,8 @@ const LudoGame = (() => {
         if (types[p] !== 'human') return;
 
         const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-        const mx = (clientX - rect.left) * scaleX;
-        const my = (clientY - rect.top) * scaleY;
+        const mx = clientX - rect.left;
+        const my = clientY - rect.top;
 
         // Check hitboxes in reverse order (top-most token first)
         for (let i = hitboxes.length - 1; i >= 0; i--) {
@@ -326,7 +324,7 @@ const LudoGame = (() => {
             if (h.player !== p) continue;
 
             const dx = mx - h.x, dy = my - h.y;
-            const hitRadius = Math.max(h.r, canvas.width / 15 * 0.5);
+            const hitRadius = Math.max(h.r, rect.width / 15 * 0.5);
             if (dx * dx + dy * dy <= hitRadius * hitRadius) {
                 if (validMoves.some(m => m.id === h.id)) {
                     doMove(h.id);
@@ -356,8 +354,9 @@ const LudoGame = (() => {
             if (canvas) {
                 const rect = canvas.getBoundingClientRect();
                 const size = Math.round(Math.min(rect.width, rect.height));
-                canvas.width = size;
-                canvas.height = size;
+                const dpr = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
+                canvas.width = size * dpr;
+                canvas.height = size * dpr;
             }
 
             difficulty = diff || 'medium';
@@ -416,8 +415,9 @@ const LudoGame = (() => {
             if (!canvas || state === 'idle') return;
             const rect = canvas.getBoundingClientRect();
             const size = Math.round(Math.min(rect.width, rect.height));
-            canvas.width = size;
-            canvas.height = size;
+            const dpr = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
+            canvas.width = size * dpr;
+            canvas.height = size * dpr;
             render();
         },
 

@@ -138,8 +138,12 @@ const LudoBoard = (() => {
      */
     function drawBoard(canvas, tokens, movable) {
         const ctx = canvas.getContext('2d');
-        const S = canvas.width / 15;  // cell size
-        const W = canvas.width;
+        const dpr = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
+        ctx.save();
+        ctx.scale(dpr, dpr);
+
+        const S = (canvas.width / dpr) / 15;  // cell size
+        const W = canvas.width / dpr;
 
         // ── 1. Background ──
         ctx.fillStyle = '#ecf0f1';
@@ -337,6 +341,7 @@ const LudoBoard = (() => {
             });
         });
 
+        ctx.restore();
         return hitboxes;
     }
 
