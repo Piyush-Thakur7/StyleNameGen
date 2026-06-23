@@ -205,19 +205,6 @@ body {
     color: #57606f;
     margin-bottom: 20px;
     font-weight: 500;
-}
-
-.social-proof {
-    display: inline-block;
-    background: #ffeaa7;
-    border: 2px solid #fdcb6e;
-    color: #d35400;
-    font-weight: 700;
-    font-size: 14px;
-    padding: 6px 16px;
-    border-radius: 30px;
-    margin-bottom: 24px;
-}
 
 .setup-mode-section h2, .settings-group h3 {
     font-family: var(--font-heading);
