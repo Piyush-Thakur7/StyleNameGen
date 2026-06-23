@@ -1,12 +1,17 @@
-# 🎲 Ludo World - Free Online Ludo Game
+# 🎲 Ludo World Online - Free Online Ludo Game
 
 A complete, production-ready, lightweight Ludo board game built as a single-page web app. It is simple, fun, responsive, and requires no downloads or signups.
 
-## 🚀 Live Demo & Deployment
+## 🚀 Live Game Website
 
-This game can be deployed instantly to static hosting providers (such as Vercel, Netlify, or GitHub Pages) by simply uploading the directory.
+Play the game instantly in your browser at:
+👉 **[https://ludo.resence.in](https://ludo.resence.in)**
 
-To run it locally:
+---
+
+## 💻 Local Setup & Development
+
+To run the game locally:
 1. Open a terminal or shell in the project folder.
 2. Start a local web server, for example:
    ```bash
