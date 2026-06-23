@@ -1,5 +1,6 @@
 /* Custom variables for cartoonish themes and palette */
 :root {
+    color-scheme: only light;
     --red-primary: #ff4757;
     --red-dark: #ff2a3a;
     --red-light: #ff6b81;
@@ -507,6 +508,7 @@ body {
 
 
 .cube-face {
+    color-scheme: only light;
     position: absolute;
     width: 44px;
     height: 44px;
