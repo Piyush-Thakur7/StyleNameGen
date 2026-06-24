@@ -42,14 +42,33 @@
       gtag('js', new Date());
       gtag('config', 'G-XQV7RQ72W2');
 
-      window.addEventListener('load', function() {
-        setTimeout(function() {
+      (function() {
+        var gtmLoaded = false;
+        function loadGTM() {
+          if (gtmLoaded) return;
+          gtmLoaded = true;
+
+          // Remove interaction listeners
+          window.removeEventListener('click', loadGTM);
+          window.removeEventListener('scroll', loadGTM);
+          window.removeEventListener('touchstart', loadGTM);
+          window.removeEventListener('mousemove', loadGTM);
+          window.removeEventListener('keydown', loadGTM);
+
+          // Dynamically inject script
           var script = document.createElement('script');
           script.async = true;
           script.src = 'https://www.googletagmanager.com/gtag/js?id=G-XQV7RQ72W2';
           document.head.appendChild(script);
-        }, 2000);
-      });
+        }
+
+        // Listen for common user interactions
+        window.addEventListener('click', loadGTM, { passive: true });
+        window.addEventListener('scroll', loadGTM, { passive: true });
+        window.addEventListener('touchstart', loadGTM, { passive: true });
+        window.addEventListener('mousemove', loadGTM, { passive: true });
+        window.addEventListener('keydown', loadGTM, { passive: true });
+      })();
     </script>
 
     <!-- Schema.org JSON-LD Markup -->

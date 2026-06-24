@@ -350,15 +350,6 @@ const LudoGame = (() => {
 
             canvas = document.getElementById('ludo-board');
 
-            // Resize canvas buffer to match display size
-            if (canvas) {
-                const rect = canvas.getBoundingClientRect();
-                const size = Math.round(Math.min(rect.width, rect.height));
-                const dpr = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
-                canvas.width = size * dpr;
-                canvas.height = size * dpr;
-            }
-
             difficulty = diff || 'medium';
 
             count = parseInt(count) || 4;
@@ -380,12 +371,25 @@ const LudoGame = (() => {
             state = 'waitRoll';
             validMoves = [];
 
-            LudoDice.setValue(6);
-            render();
-            scheduleAI();
+            // Chunk 2: Resize canvas on next event loop tick
+            setTimeout(() => {
+                if (canvas) {
+                    const rect = canvas.getBoundingClientRect();
+                    const size = Math.round(Math.min(rect.width, rect.height));
+                    const dpr = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
+                    canvas.width = size * dpr;
+                    canvas.height = size * dpr;
+                }
 
-            // Start animation loop for pulsing highlights
-            animLoop();
+                if (window.LudoDice) LudoDice.setValue(6);
+
+                // Chunk 3: Render and run AI / animation loops on next tick
+                setTimeout(() => {
+                    render();
+                    scheduleAI();
+                    animLoop();
+                }, 0);
+            }, 0);
         },
 
         /** Stop the active game, cancel all timers and animation frames */
