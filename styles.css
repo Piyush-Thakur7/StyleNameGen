@@ -76,25 +76,33 @@ body {
 /* Colorful animated Ludo logo theme */
 .logo-text {
     font-family: var(--font-heading);
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 0.95;
     letter-spacing: 1px;
     display: flex;
-    align-items: center;
-    gap: 2px;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .logo-text-large {
     font-family: var(--font-heading);
     font-size: 42px;
     font-weight: 800;
-    line-height: 1.1;
+    line-height: 0.95;
     letter-spacing: 1.5px;
-    margin-bottom: 2px;
+    margin-bottom: 8px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+}
+
+.ludo-word {
+    display: flex;
+    gap: 2px;
+}
+
+.logo-text-large .ludo-word {
     gap: 4px;
 }
 
@@ -118,7 +126,17 @@ body {
 
 .logo-online {
     color: #fff;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    margin-top: 2px;
     text-shadow: 2px 2px 0px #2f3542, 4px 4px 0px rgba(0, 0, 0, 0.15);
+}
+
+.logo-text-large .logo-online {
+    font-size: 24px;
+    letter-spacing: 4px;
+    margin-top: 4px;
 }
 
 .logo-online.dark {
