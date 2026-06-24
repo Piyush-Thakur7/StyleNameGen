@@ -178,6 +178,23 @@
                         </div>
                     </div>
 
+                    <!-- Player Names Input Section -->
+                    <div id="names-section" class="settings-group">
+                        <h3>Player Names</h3>
+                        <div id="names-inputs-container" class="names-inputs-grid">
+                            <!-- Populated dynamically in UI.js -->
+                        </div>
+                    </div>
+
+                    <!-- Session Scoreboard -->
+                    <div id="lobby-scoreboard" class="settings-group" style="display: none;">
+                        <h3>Session Scoreboard</h3>
+                        <div id="scoreboard-entries" class="scoreboard-grid">
+                            <!-- Populated dynamically in UI.js -->
+                        </div>
+                        <button id="reset-score-btn" class="reset-score-btn">Reset Scores 🔄</button>
+                    </div>
+
                     <button id="start-btn" class="start-btn">Start Game 🎲</button>
                 </div>
             </div>
@@ -260,6 +277,12 @@
                     <div class="trophy-icon">🏆</div>
                     <h2 id="winner-text">Red Wins! 🎉</h2>
                     <p>What a brilliant match! Ready for another round?</p>
+                    
+                    <div class="win-scoreboard-wrapper">
+                        <h3>Scoreboard</h3>
+                        <div id="win-scoreboard-entries" class="scoreboard-grid"></div>
+                    </div>
+
                     <button id="play-again-btn" class="start-btn">Play Again</button>
                 </div>
             </div>

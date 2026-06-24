@@ -20,7 +20,25 @@ const LudoUI = (() => {
         if (fullscreenBtn) {
             fullscreenBtn.style.display = (id === 'play-screen') ? 'flex' : 'none';
         }
+        
+        // Update lobby scoreboard and names when entering lobby screen
+        if (id === 'lobby-screen') {
+            const lobbyScoreboard = document.getElementById('lobby-scoreboard');
+            if (lobbyScoreboard) {
+                if (hasPlayedARound) {
+                    lobbyScoreboard.style.display = 'block';
+                    renderScoreboard('scoreboard-entries');
+                } else {
+                    lobbyScoreboard.style.display = 'none';
+                }
+            }
+            updateNamesInputs();
+        }
     }
+
+    // ─── Scoreboard & Player Name State ──────────────────
+    let winsScore = { red: 0, green: 0, yellow: 0, blue: 0 };
+    let hasPlayedARound = false;
 
     // ─── Confetti Effect ──────────────────────────────────
 
@@ -29,18 +47,128 @@ const LudoUI = (() => {
         if (!container) return;
         container.innerHTML = '';
 
-        const palette = ['#e74c3c','#2ecc71','#f39c12','#3498db','#9b59b6','#1abc9c','#fff'];
-        for (let i = 0; i < 80; i++) {
+        const palette = ['#e74c3c','#2ecc71','#f39c12','#3498db','#9b59b6','#1abc9c','#e84393','#ffeaa7'];
+        for (let i = 0; i < 120; i++) {
             const piece = document.createElement('div');
             piece.className = 'confetti-piece';
             piece.style.left = Math.random() * 100 + '%';
             piece.style.background = palette[Math.floor(Math.random() * palette.length)];
-            piece.style.animationDelay = (Math.random() * 2) + 's';
+            
+            // Randomize size and shape
+            const size = Math.random() * 8 + 6; // 6px to 14px
+            piece.style.width = size + 'px';
+            piece.style.height = (Math.random() > 0.5 ? size : size * 0.6) + 'px';
+            if (Math.random() > 0.5) {
+                piece.style.borderRadius = '50%';
+            }
+
+            // Sway animation offset
+            const sway = (Math.random() * 200 - 100) + 'px';
+            piece.style.setProperty('--sway-x', sway);
+
+            piece.style.animationDelay = (Math.random() * 1.5) + 's';
             piece.style.animationDuration = (2 + Math.random() * 2) + 's';
             container.appendChild(piece);
         }
 
-        setTimeout(() => { container.innerHTML = ''; }, 5000);
+        setTimeout(() => { container.innerHTML = ''; }, 6000);
+    }
+
+    // ─── Player Name Inputs Generation ────────────────────
+
+    function updateNamesInputs() {
+        const container = document.getElementById('names-inputs-container');
+        if (!container) return;
+
+        // Remember existing names entered by user so they don't get lost
+        const savedNames = {};
+        container.querySelectorAll('.name-input-field').forEach(input => {
+            if (input.dataset.color) {
+                savedNames[input.dataset.color] = input.value.trim();
+            }
+        });
+
+        container.innerHTML = '';
+
+        let activeColors = [];
+        if (playerCount === 2) activeColors = ['red', 'yellow'];
+        else if (playerCount === 3) activeColors = ['red', 'green', 'yellow'];
+        else activeColors = ['red', 'green', 'yellow', 'blue'];
+
+        activeColors.forEach((color, idx) => {
+            const group = document.createElement('div');
+            group.className = 'name-input-group';
+
+            const indicator = document.createElement('div');
+            indicator.className = `name-input-color-indicator ${color}`;
+
+            const label = document.createElement('span');
+            label.className = 'name-input-label';
+            label.textContent = color.charAt(0).toUpperCase() + color.slice(1);
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'name-input-field';
+            input.dataset.color = color;
+            input.maxLength = 16;
+
+            const isCPU = (gameMode === 'ai' && color !== 'red');
+            if (isCPU) {
+                input.value = `Computer (${color.charAt(0).toUpperCase() + color.slice(1)})`;
+                input.disabled = true;
+                input.style.color = '#747d8c';
+                input.style.cursor = 'not-allowed';
+            } else {
+                const defaultName = `Player ${idx + 1}`;
+                input.value = savedNames[color] || (color === 'red' ? 'Player 1' : defaultName);
+                input.placeholder = defaultName;
+            }
+
+            group.appendChild(indicator);
+            group.appendChild(label);
+            group.appendChild(input);
+            container.appendChild(group);
+        });
+    }
+
+    // ─── Scoreboard Rendering ─────────────────────────────
+
+    function renderScoreboard(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = '';
+
+        const names = window.LudoGame ? LudoGame.getPlayerNames() : { red: 'Red', green: 'Green', yellow: 'Yellow', blue: 'Blue' };
+
+        let activeColors = [];
+        if (playerCount === 2) activeColors = ['red', 'yellow'];
+        else if (playerCount === 3) activeColors = ['red', 'green', 'yellow'];
+        else activeColors = ['red', 'green', 'yellow', 'blue'];
+
+        activeColors.forEach(color => {
+            const card = document.createElement('div');
+            card.className = 'score-card';
+
+            const info = document.createElement('div');
+            info.className = 'score-info';
+
+            const dot = document.createElement('div');
+            dot.className = `score-color-dot ${color}`;
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'score-name';
+            nameSpan.textContent = names[color] || (color.charAt(0).toUpperCase() + color.slice(1));
+
+            const scoreVal = document.createElement('span');
+            scoreVal.className = 'score-number';
+            scoreVal.textContent = winsScore[color] || 0;
+
+            info.appendChild(dot);
+            info.appendChild(nameSpan);
+            card.appendChild(info);
+            card.appendChild(scoreVal);
+            container.appendChild(card);
+        });
     }
 
     // ─── Canvas Resize Handler ────────────────────────────
@@ -75,6 +203,7 @@ const LudoUI = (() => {
                     if (diffSection) diffSection.style.display = '';
                 }
                 if (window.LudoSounds) LudoSounds.playClick();
+                updateNamesInputs();
             });
         }
 
@@ -95,6 +224,7 @@ const LudoUI = (() => {
                 btn.classList.add('active');
                 playerCount = parseInt(btn.dataset.count) || 4;
                 if (window.LudoSounds) LudoSounds.playClick();
+                updateNamesInputs();
             });
         });
 
@@ -102,6 +232,13 @@ const LudoUI = (() => {
         const startBtn = document.getElementById('start-btn');
         if (startBtn) {
             startBtn.addEventListener('click', () => {
+                // Read names from inputs
+                const names = {};
+                document.querySelectorAll('.name-input-field').forEach(input => {
+                    const color = input.dataset.color;
+                    names[color] = input.value.trim() || input.placeholder || color;
+                });
+
                 // Unlock AudioContext on first user gesture
                 if (window.LudoSounds) LudoSounds.init();
                 if (window.LudoSounds) LudoSounds.playClick();
@@ -111,7 +248,7 @@ const LudoUI = (() => {
                 setTimeout(() => {
                     showScreen('play-screen');
                     if (window.LudoGame) {
-                        LudoGame.start(gameMode, gameDifficulty, playerCount);
+                        LudoGame.start(gameMode, gameDifficulty, playerCount, names);
                     }
                 }, 800);
             });
@@ -189,6 +326,11 @@ const LudoUI = (() => {
         // ── Mute Button ──
         const muteBtn = document.getElementById('mute-btn');
         if (muteBtn) {
+            if (window.LudoSounds) {
+                const muted = LudoSounds.isMuted();
+                muteBtn.textContent = muted ? '🔇' : '🔊';
+                muteBtn.title = muted ? 'Unmute' : 'Mute';
+            }
             muteBtn.addEventListener('click', () => {
                 if (!window.LudoSounds) return;
                 const muted = LudoSounds.toggleMute();
@@ -284,6 +426,26 @@ const LudoUI = (() => {
             resizeTimeout = setTimeout(resizeCanvas, 150);
         });
 
+        // Initial scoreboard and names generation setup
+        updateNamesInputs();
+        if (hasPlayedARound) {
+            document.getElementById('lobby-scoreboard').style.display = 'block';
+            renderScoreboard('scoreboard-entries');
+        } else {
+            document.getElementById('lobby-scoreboard').style.display = 'none';
+        }
+
+        // ── Score Reset Button ──
+        const resetBtn = document.getElementById('reset-score-btn');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                winsScore = { red: 0, green: 0, yellow: 0, blue: 0 };
+                hasPlayedARound = false;
+                document.getElementById('lobby-scoreboard').style.display = 'none';
+                if (window.LudoSounds) LudoSounds.playClick();
+            });
+        }
+
         // Show lobby
         showScreen('lobby-screen');
     }
@@ -294,12 +456,24 @@ const LudoUI = (() => {
 
         /** Show the win screen with confetti */
         showWin(player) {
-            const name = player.charAt(0).toUpperCase() + player.slice(1);
+            // Track wins
+            if (winsScore[player] !== undefined) {
+                winsScore[player]++;
+                hasPlayedARound = true;
+            }
+
+            const names = window.LudoGame ? LudoGame.getPlayerNames() : {};
+            const name = names[player] || (player.charAt(0).toUpperCase() + player.slice(1));
+            
             const winnerText = document.getElementById('winner-text');
             if (winnerText) {
                 winnerText.textContent = `🎉 ${name} Wins! 🎉`;
                 winnerText.style.color = LudoBoard.COLORS[player].fill;
             }
+
+            // Render win screen scoreboard
+            renderScoreboard('win-scoreboard-entries');
+
             launchConfetti(player);
             setTimeout(() => showScreen('win-screen'), 1500);
         }

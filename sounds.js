@@ -8,6 +8,16 @@ const LudoSounds = (() => {
     let ctx = null;
     let muted = false;
 
+    // Load initial sound preference from localStorage
+    try {
+        const storedMuted = localStorage.getItem('ludo_muted');
+        if (storedMuted !== null) {
+            muted = storedMuted === 'true';
+        }
+    } catch (e) {
+        // Fallback if localStorage is disabled
+    }
+
     /** Create or resume AudioContext (must be called from user gesture) */
     function ensureCtx() {
         if (!ctx) {
@@ -51,6 +61,9 @@ const LudoSounds = (() => {
         /** Toggle mute state. Returns true if now muted. */
         toggleMute() {
             muted = !muted;
+            try {
+                localStorage.setItem('ludo_muted', muted);
+            } catch (e) {}
             ensureCtx();
             return muted;
         },

@@ -10,6 +10,7 @@ const LudoGame = (() => {
     const OFFSETS = { red: 40, green: 1, yellow: 14, blue: 27 };
 
     // ─── Game State ───────────────────────────────────────
+    let playerNames = { red: 'Red', green: 'Green', yellow: 'Yellow', blue: 'Blue' };
     let players = [];       // Active player colors in turn order
     let types = {};         // { red:'human', green:'ai', ... }
     let difficulty = 'medium';
@@ -263,7 +264,7 @@ const LudoGame = (() => {
         if (!dot || !txt) return;
 
         const p = curPlayer();
-        const name = p.charAt(0).toUpperCase() + p.slice(1);
+        const customName = playerNames[p] || (p.charAt(0).toUpperCase() + p.slice(1));
 
         const diceContainer = document.querySelector('.dice-container');
         if (diceContainer) {
@@ -274,8 +275,7 @@ const LudoGame = (() => {
             txt.textContent = 'Game Over!';
             txt.style.color = '#f1c40f';
         } else {
-            const suffix = types[p] === 'ai' ? ' (AI)' : '';
-            txt.textContent = `${name}'s Turn${suffix}`;
+            txt.textContent = `${customName}'s Turn`;
             txt.style.color = '#fff';
         }
 
@@ -342,13 +342,16 @@ const LudoGame = (() => {
          * @param {string} mode - 'ai' or 'local'
          * @param {string} diff - 'easy'|'medium'|'hard'
          * @param {number} count - Number of players (2–4)
+         * @param {object} names - Optional player name mappings
          */
-        start(mode, diff, count) {
+        start(mode, diff, count, names) {
             // Clean up previous game
             clearTimeout(aiTimer);
             if (animFrame) cancelAnimationFrame(animFrame);
 
             canvas = document.getElementById('ludo-board');
+
+            playerNames = names || { red: 'Red', green: 'Green', yellow: 'Yellow', blue: 'Blue' };
 
             difficulty = diff || 'medium';
 
@@ -427,7 +430,8 @@ const LudoGame = (() => {
 
         getState() { return state; },
         getTokens() { return tokens; },
-        getCurrentPlayer() { return curPlayer(); }
+        getCurrentPlayer() { return curPlayer(); },
+        getPlayerNames() { return playerNames; }
     };
 })();
 

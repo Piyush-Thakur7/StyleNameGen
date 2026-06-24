@@ -1124,3 +1124,185 @@ body.theater-mode .board-wrapper {
     transform: translateY(4px);
     box-shadow: 0 0px 0px var(--neutral-dark);
 }
+
+/* ──────────────────────────────────────────────────────────
+   Player Name Inputs & Scoreboard Styling
+   ────────────────────────────────────────────────────────── */
+
+.names-inputs-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+    text-align: left;
+}
+
+.name-input-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    padding: 10px 14px;
+    border-radius: var(--border-radius-md);
+    border: 3px solid var(--neutral-dark);
+    box-shadow: 0 3px 0px var(--neutral-dark);
+}
+
+.name-input-color-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2.5px solid var(--neutral-dark);
+    flex-shrink: 0;
+}
+
+.name-input-color-indicator.red { background: var(--red-primary); }
+.name-input-color-indicator.green { background: var(--green-primary); }
+.name-input-color-indicator.yellow { background: var(--yellow-primary); }
+.name-input-color-indicator.blue { background: var(--blue-primary); }
+
+.name-input-label {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    color: var(--neutral-dark);
+    width: 60px;
+    flex-shrink: 0;
+}
+
+.name-input-field {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--neutral-dark);
+    background: transparent;
+}
+
+.scoreboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 12px 0;
+    text-align: left;
+}
+
+.score-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 10px 14px;
+    border-radius: var(--border-radius-md);
+    border: 3px solid var(--neutral-dark);
+    box-shadow: 0 3px 0px var(--neutral-dark);
+}
+
+.score-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.score-color-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--neutral-dark);
+    flex-shrink: 0;
+}
+.score-color-dot.red { background: var(--red-primary); }
+.score-color-dot.green { background: var(--green-primary); }
+.score-color-dot.yellow { background: var(--yellow-primary); }
+.score-color-dot.blue { background: var(--blue-primary); }
+
+.score-name {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    color: var(--neutral-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.score-number {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--neutral-dark);
+    flex-shrink: 0;
+    padding-left: 6px;
+}
+
+.reset-score-btn {
+    background: #ffeaa7;
+    border: 3px solid var(--neutral-dark);
+    padding: 8px 16px;
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 4px 0px var(--neutral-dark);
+    transition: all 0.1s ease;
+    display: inline-block;
+}
+.reset-score-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0px var(--neutral-dark);
+}
+.reset-score-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0px 0px var(--neutral-dark);
+}
+
+.win-scoreboard-wrapper {
+    margin: 16px 0;
+    text-align: center;
+}
+.win-scoreboard-wrapper h3 {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: var(--neutral-dark);
+}
+
+/* ── Confetti fall animation ── */
+#confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -20px;
+    opacity: 0.9;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.95;
+    }
+    100% {
+        transform: translateY(105vh) translateX(var(--sway-x, 40px)) rotate(720deg);
+        opacity: 0;
+    }
+}
