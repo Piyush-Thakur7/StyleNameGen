@@ -32,16 +32,24 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fredoka:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fredoka:wght@400;700&display=swap"></noscript>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XQV7RQ72W2"></script>
+    <!-- Delayed Google tag (gtag.js) to optimize PageSpeed -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-XQV7RQ72W2');
+
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-XQV7RQ72W2';
+          document.head.appendChild(script);
+        }, 2000);
+      });
     </script>
 
     <!-- Schema.org JSON-LD Markup -->
@@ -319,12 +327,7 @@
         <p>&copy; 2026 Resence Games. All Rights Reserved. Play Free Ludo Online.</p>
     </footer>
 
-    <!-- Modular Script Imports -->
-    <script src="sounds.js" defer></script>
-    <script src="board.js" defer></script>
-    <script src="dice.js" defer></script>
-    <script src="ai.js" defer></script>
-    <script src="ui.js" defer></script>
-    <script src="game-logic.js" defer></script>
+    <!-- Combined & Minified Web Application Bundle -->
+    <script src="app.min.js" defer></script>
 </body>
 </html>

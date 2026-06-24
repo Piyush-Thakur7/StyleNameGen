@@ -301,41 +301,86 @@ const LudoBoard = (() => {
                 if (isMovable) {
                     const pulse = Math.sin(Date.now() / 200) * 3;
                     ctx.beginPath();
-                    ctx.arc(sx, sy, rad + 5 + pulse, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(241, 196, 15, 0.45)';
+                    ctx.ellipse(sx, sy - rad * 0.05, rad * 0.85 + pulse, rad * 1.0 + pulse, 0, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(241, 196, 15, 0.4)';
                     ctx.fill();
                     ctx.strokeStyle = '#f1c40f';
-                    ctx.lineWidth = 2.5;
+                    ctx.lineWidth = 2;
                     ctx.stroke();
                 }
 
-                // Token body
+                // 1. Drop shadow below to feel "lifted" off the board
                 ctx.beginPath();
-                ctx.arc(sx, sy, rad, 0, Math.PI * 2);
-                const gradient = ctx.createRadialGradient(sx - rad*0.3, sy - rad*0.3, 0, sx, sy, rad);
-                gradient.addColorStop(0, col.light);
-                gradient.addColorStop(1, col.fill);
-                ctx.fillStyle = gradient;
+                ctx.ellipse(sx, sy + rad * 0.65, rad * 0.75, rad * 0.22, 0, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
                 ctx.fill();
-                ctx.strokeStyle = '#fff';
-                ctx.lineWidth = 2.5;
-                ctx.stroke();
 
-                // Inner ring
+                // 2. Base
                 ctx.beginPath();
-                ctx.arc(sx, sy, rad * 0.45, 0, Math.PI * 2);
-                ctx.fillStyle = col.light;
+                ctx.ellipse(sx, sy + rad * 0.55, rad * 0.7, rad * 0.2, 0, 0, Math.PI * 2);
+                const baseGrad = ctx.createLinearGradient(sx - rad * 0.7, sy + rad * 0.35, sx + rad * 0.7, sy + rad * 0.75);
+                baseGrad.addColorStop(0, col.light);
+                baseGrad.addColorStop(0.3, col.fill);
+                baseGrad.addColorStop(1, col.dark);
+                ctx.fillStyle = baseGrad;
                 ctx.fill();
                 ctx.strokeStyle = col.dark;
                 ctx.lineWidth = 1.5;
                 ctx.stroke();
 
-                // Shadow
+                // 3. Body (narrow neck, flared bottom)
                 ctx.beginPath();
-                ctx.arc(sx + 1, sy + 2, rad, 0, Math.PI * 2);
-                ctx.strokeStyle = 'rgba(0,0,0,0.15)';
-                ctx.lineWidth = 1;
+                ctx.moveTo(sx - rad * 0.25, sy - rad * 0.1);
+                ctx.quadraticCurveTo(sx - rad * 0.3, sy + rad * 0.25, sx - rad * 0.65, sy + rad * 0.55);
+                ctx.lineTo(sx + rad * 0.65, sy + rad * 0.55);
+                ctx.quadraticCurveTo(sx + rad * 0.3, sy + rad * 0.25, sx + rad * 0.25, sy - rad * 0.1);
+                ctx.closePath();
+                const bodyGrad = ctx.createLinearGradient(sx - rad * 0.5, sy - rad * 0.1, sx + rad * 0.5, sy + rad * 0.55);
+                bodyGrad.addColorStop(0, col.light);
+                bodyGrad.addColorStop(0.3, col.fill);
+                bodyGrad.addColorStop(1, col.dark);
+                ctx.fillStyle = bodyGrad;
+                ctx.fill();
+                ctx.strokeStyle = col.dark;
+                ctx.lineWidth = 1.5;
                 ctx.stroke();
+
+                // 4. Collar (neck ring)
+                ctx.beginPath();
+                ctx.ellipse(sx, sy - rad * 0.1, rad * 0.3, rad * 0.08, 0, 0, Math.PI * 2);
+                const collarGrad = ctx.createLinearGradient(sx - rad * 0.3, sy - rad * 0.18, sx + rad * 0.3, sy - rad * 0.02);
+                collarGrad.addColorStop(0, col.light);
+                collarGrad.addColorStop(0.5, col.fill);
+                collarGrad.addColorStop(1, col.dark);
+                ctx.fillStyle = collarGrad;
+                ctx.fill();
+                ctx.strokeStyle = col.dark;
+                ctx.lineWidth = 1.2;
+                ctx.stroke();
+
+                // 5. Head (sphere)
+                ctx.beginPath();
+                ctx.arc(sx, sy - rad * 0.5, rad * 0.42, 0, Math.PI * 2);
+                // Radial gradient for glossy 3D head: highlight at top-left
+                const headGrad = ctx.createRadialGradient(
+                    sx - rad * 0.15, sy - rad * 0.65, 0,
+                    sx, sy - rad * 0.5, rad * 0.42
+                );
+                headGrad.addColorStop(0, '#ffffff'); // bright highlight
+                headGrad.addColorStop(0.2, col.light);
+                headGrad.addColorStop(0.7, col.fill);
+                headGrad.addColorStop(1, col.dark);
+                ctx.fillStyle = headGrad;
+                ctx.fill();
+                ctx.strokeStyle = col.dark;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // 6. Highlight Reflection (extra gloss 3D pop)
+                ctx.beginPath();
+                ctx.arc(sx - rad * 0.15, sy - rad * 0.65, rad * 0.08, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+                ctx.fill();
 
                 hitboxes.push({ player: t.player, id: t.id, x: sx, y: sy, r: rad });
             });

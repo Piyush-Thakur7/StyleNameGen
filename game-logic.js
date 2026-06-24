@@ -181,7 +181,7 @@ const LudoGame = (() => {
             if (window.LudoSounds) LudoSounds.playTokenMove();
 
             if (tok.pos < destPos) {
-                setTimeout(hop, 100);
+                setTimeout(hop, 140);
             } else {
                 onLand(tok);
             }
