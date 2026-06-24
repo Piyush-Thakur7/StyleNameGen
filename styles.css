@@ -73,24 +73,68 @@ body {
     align-items: flex-start;
 }
 
+/* Colorful animated Ludo logo theme */
 .logo-text {
     font-family: var(--font-heading);
     font-size: 28px;
     font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.logo-text-large {
+    font-family: var(--font-heading);
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: 1.5px;
+    margin-bottom: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.ludo-letter {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    animation: letterBob 2s infinite ease-in-out;
+    text-shadow: 2px 2px 0px #2f3542, 4px 4px 0px rgba(0, 0, 0, 0.15);
+}
+
+.logo-text-large .ludo-letter {
+    font-size: 48px;
+    text-shadow: 3px 3px 0px #2f3542, 5px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.ludo-letter.red { color: var(--red-light); animation-delay: 0s; }
+.ludo-letter.green { color: var(--green-light); animation-delay: 0.15s; }
+.ludo-letter.yellow { color: #ffeaa7; animation-delay: 0.3s; }
+.ludo-letter.blue { color: var(--blue-light); animation-delay: 0.45s; }
+
+.logo-online {
     color: #fff;
     text-shadow: 2px 2px 0px #2f3542, 4px 4px 0px rgba(0, 0, 0, 0.15);
-    letter-spacing: 1px;
-    line-height: 1.1;
+}
+
+.logo-online.dark {
+    color: var(--neutral-dark);
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.02);
 }
 
 .logo-byline {
     font-size: 11px;
     font-weight: 800;
-    color: rgba(255, 255, 255, 0.9);
-    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.95);
+    letter-spacing: 1.5px;
     text-transform: uppercase;
     text-shadow: 1px 1px 0px #2f3542;
     margin-top: 2px;
+    animation: bylinePulse 3s infinite ease-in-out;
 }
 
 .header-controls {
@@ -198,6 +242,17 @@ body {
     color: #747d8c;
     margin-bottom: 16px;
     letter-spacing: 0.5px;
+    animation: bylinePulse 3s infinite ease-in-out;
+}
+
+@keyframes letterBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes bylinePulse {
+    0%, 100% { opacity: 0.85; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.02); }
 }
 
 .tagline {
