@@ -157,7 +157,11 @@ export default function InvisibleCharTool() {
                 </span>
               </div>
               
-              <div className="rounded-xl bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 p-4 text-center font-mono text-xl font-bold select-all text-slate-800 dark:text-slate-100">
+              <div 
+                onClick={() => handleCopy(combinedResult, 'combined', true)}
+                className="rounded-xl bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 p-4 text-center font-mono text-xl font-bold select-all text-slate-800 dark:text-slate-100 cursor-pointer hover:border-violet-400 dark:hover:border-violet-800 transition-all active:scale-[0.98]"
+                title="Tap to copy combined result"
+              >
                 {combinedResult}
               </div>
               <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-2.5 text-center font-semibold">
